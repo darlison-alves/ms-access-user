@@ -3,18 +3,20 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ChannelWrapper, connect } from "amqp-connection-manager";
 import { UserUpdatedEvent } from "src/domain/events/user.updated.event";
 
+const { RABBIT_HOST, RABBIT_QUEUE, MONGO_URL } = process.env;
+
 const connAmqpProvider: Provider = {
     provide: 'conn-amqp',
     async useFactory() {
         try {
-            const conn = await connect(['amqp://rabbitmq:rabbitmq@localhost:5672'], { connectionOptions: { rejectUnauthorized: true } });
+            const conn = await connect([RABBIT_HOST], { connectionOptions: { rejectUnauthorized: true } });
             await conn.createChannel({
                 json: true,
                 async setup(channel: ChannelWrapper) {
                     await channel.assertExchange('eduq-cursos', 'direct');
-                    await channel.assertQueue('ms-course');
+                    await channel.assertQueue(RABBIT_QUEUE);
 
-                    await channel.bindQueue('ms-course', 'eduq-cursos', UserUpdatedEvent.name);
+                    await channel.bindQueue(RABBIT_QUEUE, 'eduq-cursos', UserUpdatedEvent.name);
                 },
             });
             return conn
@@ -26,7 +28,7 @@ const connAmqpProvider: Provider = {
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://localhost/test', {})
+        MongooseModule.forRoot(MONGO_URL, {})
     ],
     providers: [
         connAmqpProvider

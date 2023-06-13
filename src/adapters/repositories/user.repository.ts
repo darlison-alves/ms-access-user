@@ -11,7 +11,7 @@ export class UserRepository {
         if(user._id) {
             await this.userModel.updateOne({ _id: user._id }, user);
         } else {
-            await this.userModel.create(user);
+            return this.userModel.create(user);
         }
         return user;
     }
