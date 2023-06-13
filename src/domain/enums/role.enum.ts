@@ -1,0 +1,5 @@
+export enum RoleEnum {
+    COURSE_XYZ = 'COURSE_XYZ',
+    COURSE_ABCD = 'COURSE_ABCD',
+    PREMIUM_USER = 'PREMIUM_USER'
+}

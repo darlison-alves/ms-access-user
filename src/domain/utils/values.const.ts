@@ -1,0 +1,1 @@
+export const DAYS_OF_ACCESS = 30;
