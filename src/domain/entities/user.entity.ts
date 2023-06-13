@@ -1,7 +1,6 @@
 import { Schema as SchemaMongo } from "mongoose"
 import { Prop, Schema } from "@nestjs/mongoose";
 import { RoleEnum } from "../enums/role.enum";
-import { DAYS_OF_ACCESS } from "../utils/values.const";
 
 @Schema()
 export class User {

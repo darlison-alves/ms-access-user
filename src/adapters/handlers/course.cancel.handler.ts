@@ -31,12 +31,6 @@ export class CourseCancelHandler extends CourseHandler {
 
     await this.cancelAdhesion(payload, user);
 
-    await this.eventBroker.publish(new UserUpdatedEvent({
-      email: user.email,
-      userId: user._id,
-      roles: user.roles
-    }))
-
     return;
   }
 
@@ -68,6 +62,13 @@ export class CourseCancelHandler extends CourseHandler {
     await this.userRepository.save(user);
 
     await this.adhesionRepository.save(adhesion);
+
+    await this.eventBroker.publish(new UserUpdatedEvent({
+      email: user.email,
+      userId: user._id,
+      roles: user.roles
+    }));
+
   }
 
   private defineExpirationDate(user: User) {
