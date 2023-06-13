@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule, SchemaFactory } from '@nestjs/mongoose';
+import { EventBroker } from './adapters/broker/event.broker';
 import { ConfigModule } from './adapters/config/config.module';
 import { CourseAccessHandler } from './adapters/handlers/course.access.handler';
 import { CourseCancelHandler } from './adapters/handlers/course.cancel.handler';
@@ -21,6 +22,6 @@ import { User } from './domain/entities/user.entity';
       },
     ])],
   controllers: [CourseAccessHandler, CourseCancelHandler],
-  providers: [UserRepository, AdhesionRepository],
+  providers: [EventBroker, UserRepository, AdhesionRepository],
 })
 export class AppModule { }
